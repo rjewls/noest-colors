@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Customizer - Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .setting-group {
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+        
+        .type-selection {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .type-selection label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .color-section {
+            margin-bottom: 15px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .color-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        input[type="color"] {
+            width: 60px;
+            height: 45px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        #navbarEffectSpeedValue, #dropdownEffectSpeedValue {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-reset {
+            background: #f5f5f5;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+        
+        .btn-reset:hover {
+            background: #ececec;
+        }
+        
+        .status-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .preset-colors {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .preset-color {
+            width: 100%;
+            height: 40px;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .preset-color:hover {
+            transform: scale(1.05);
+            border-color: #333;
+        }
+        
+        #navbarAngleValue, #dropdownAngleValue {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        /* Navbar Elements Manager Styles */
+        .navbar-elements-manager {
+            margin-bottom: 30px;
+        }
+        
+        .elements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .element-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+        
+        .element-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+        
+        .element-item.hidden-element {
+            opacity: 0.5;
+            background: #e9ecef;
+        }
+        
+        .drag-handle {
+            cursor: move;
+            color: #999;
+            font-size: 18px;
+            user-select: none;
+        }
+        
+        .element-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .element-label {
+            flex: 1;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .element-controls {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-move {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .btn-move:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+        
+        .btn-move:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Theme Preset Styles */
+        .theme-presets {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .theme-presets h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+        
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .theme-btn {
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+        
+        .theme-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Navbar & Dropdown Customizer</h1>
+        <p class="subtitle">Customize the Noest Hub navbar and dropdown menus</p>
+        
+        <!-- Theme Presets Section -->
+        <div class="theme-presets">
+            <h2>🌈 Quick Theme Presets</h2>
+            <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Click any theme to apply all colors instantly</p>
+            <div class="theme-grid">
+                <button class="theme-btn" data-theme="sunset">🌅 Sunset</button>
+                <button class="theme-btn" data-theme="ocean">🌊 Ocean Breeze</button>
+                <button class="theme-btn" data-theme="forest">🌲 Forest Green</button>
+                <button class="theme-btn" data-theme="purple">💜 Purple Haze</button>
+                <button class="theme-btn" data-theme="night">🌙 Night Mode</button>
+                <button class="theme-btn" data-theme="candy">🍬 Candy Pop</button>
+                <button class="theme-btn" data-theme="fire">🔥 Fire Blaze</button>
+                <button class="theme-btn" data-theme="mint">🍃 Fresh Mint</button>
+            </div>
+        </div>
+        
+        <!-- Navbar Elements Manager Section -->
+        <div class="setting-group navbar-elements-manager">
+            <h2>📋 Navbar Elements Manager</h2>
+            <p style="color: #666; font-size: 13px; margin-bottom: 10px;">
+                Show/hide navbar items and reorder them. Default order matches the website.
+            </p>
+            <div style="margin-bottom: 10px; display: flex; gap: 10px;">
+                <button id="resetOrderBtn" class="theme-btn" style="background: #6c757d; font-size: 12px; padding: 6px 12px;">
+                    🔄 Reset to Website Default Order
+                </button>
+                <button id="clearAllSettingsBtn" class="theme-btn" style="background: #dc3545; font-size: 12px; padding: 6px 12px;">
+                    🗑️ Clear All Settings
+                </button>
+            </div>
+            <div class="elements-list" id="navbarElementsList">
+                <!-- Elements will be dynamically inserted here -->
+            </div>
+        </div>
+        
+        <div class="setting-group">
+            <h2>Navbar Background</h2>
+            <div class="type-selection">
+                <label><input type="radio" name="navbarType" value="solid" checked> Solid Color</label>
+                <label><input type="radio" name="navbarType" value="gradient"> Gradient</label>
+            </div>
+            
+            <div id="navbarSolid" class="color-section">
+                <label for="navbarColor">Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="navbarColor" value="#007bff">
+                    <input type="text" id="navbarColorHex" placeholder="#007bff" value="#007bff">
+                </div>
+                <div class="preset-colors">
+                    <div class="preset-color" style="background-color: #007bff;" title="Blue"></div>
+                    <div class="preset-color" style="background-color: #28a745;" title="Green"></div>
+                    <div class="preset-color" style="background-color: #dc3545;" title="Red"></div>
+                    <div class="preset-color" style="background-color: #ffc107;" title="Yellow"></div>
+                    <div class="preset-color" style="background-color: #17a2b8;" title="Cyan"></div>
+                    <div class="preset-color" style="background-color: #6f42c1;" title="Purple"></div>
+                    <div class="preset-color" style="background-color: #20c997;" title="Teal"></div>
+                    <div class="preset-color" style="background-color: #fd7e14;" title="Orange"></div>
+                </div>
+            </div>
+            
+            <div id="navbarGradient" class="color-section hidden">
+                <label for="navbarColor1">Start Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="navbarColor1" value="#007bff">
+                    <input type="text" id="navbarColor1Hex" placeholder="#007bff" value="#007bff">
+                </div>
+                <label for="navbarColor2">End Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="navbarColor2" value="#764ba2">
+                    <input type="text" id="navbarColor2Hex" placeholder="#764ba2" value="#764ba2">
+                </div>
+            <label><input type="range" id="navbarAngle" min="0" max="360" value="135" step="1">
+                <span id="navbarAngleValue">135°</span></label>
+            </div>
+            
+            <label for="navbarEffect">Animation Effect</label>
+            <select id="navbarEffect">
+                <option value="none">None</option>
+                <option value="breathing">Breathing (Opacity)</option>
+                <option value="shimmer">Shimmer (Left to Right)</option>
+                <option value="wave">Wave (Top to Bottom)</option>
+                <option value="pulse">Pulse (Scale)</option>
+                <option value="glow">Glow (Shadow)</option>
+                <option value="rotate">Rotate (Hue)</option>
+            </select>
+            
+            <label for="navbarEffectSpeed">Effect Speed (seconds)</label>
+            <input type="range" id="navbarEffectSpeed" min="0.5" max="5" value="3" step="0.1">
+            <span id="navbarEffectSpeedValue">3s</span>
+        </div>
+        
+        <h3 style="margin-top: 20px; color: #555;">Text & Elements Color</h3>
+        
+        <label for="navbarTextColor">Navbar Text Color</label>
+        <div class="color-input-wrapper">
+            <input type="color" id="navbarTextColor" value="#000000">
+            <input type="text" id="navbarTextColorHex" placeholder="#000000" value="#000000">
+        </div>
+        
+        <label for="navbarBadgeColor">Badge Text Color</label>
+        <div class="color-input-wrapper">
+            <input type="color" id="navbarBadgeColor" value="#ffffff">
+            <input type="text" id="navbarBadgeColorHex" placeholder="#ffffff" value="#ffffff">
+        </div>
+        
+        <label for="navbarBadgeBgColor">Badge Background Color</label>
+        <div class="color-input-wrapper">
+            <input type="color" id="navbarBadgeBgColor" value="#dc3545">
+            <input type="text" id="navbarBadgeBgColorHex" placeholder="#dc3545" value="#dc3545">
+        </div>
+        
+        <label for="navbarHoverBgColor">Hover Background Color</label>
+        <div class="color-input-wrapper">
+            <input type="color" id="navbarHoverBgColor" value="#f0f0f0">
+            <input type="text" id="navbarHoverBgColorHex" placeholder="#f0f0f0" value="#f0f0f0">
+        </div>
+        
+        <label for="navbarHoverTextColor">Hover Text Color</label>
+        <div class="color-input-wrapper">
+            <input type="color" id="navbarHoverTextColor" value="#000000">
+            <input type="text" id="navbarHoverTextColorHex" placeholder="#000000" value="#000000">
+        </div>
+        
+        <div class="setting-group">
+            <h2>Dropdown Menu Background</h2>
+                <label><input type="radio" name="dropdownType" value="solid" checked> Solid Color</label>
+                <label><input type="radio" name="dropdownType" value="gradient"> Gradient</label>
+            </div>
+            
+            <div id="dropdownSolid" class="color-section">
+                <label for="dropdownColor">Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="dropdownColor" value="#ffffff">
+                    <input type="text" id="dropdownColorHex" placeholder="#ffffff" value="#ffffff">
+                </div>
+                <div class="preset-colors">
+                    <div class="preset-color" style="background-color: #ffffff;" title="White"></div>
+                    <div class="preset-color" style="background-color: #f8f9fa;" title="Light Gray"></div>
+                    <div class="preset-color" style="background-color: #e9ecef;" title="Lighter Gray"></div>
+                    <div class="preset-color" style="background-color: #007bff;" title="Blue"></div>
+                    <div class="preset-color" style="background-color: #28a745;" title="Green"></div>
+                    <div class="preset-color" style="background-color: #dc3545;" title="Red"></div>
+                    <div class="preset-color" style="background-color: #ffc107;" title="Yellow"></div>
+                </div>
+            </div>
+            
+            <div id="dropdownGradient" class="color-section hidden">
+                <label for="dropdownColor1">Start Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="dropdownColor1" value="#ffffff">
+                    <input type="text" id="dropdownColor1Hex" placeholder="#ffffff" value="#ffffff">
+                </div>
+                <label for="dropdownColor2">End Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="dropdownColor2" value="#f8f9fa">
+                    <input type="text" id="dropdownColor2Hex" placeholder="#f8f9fa" value="#f8f9fa">
+                </div>
+                <label for="dropdownAngle">Gradient Angle (degrees)</label>
+                <input type="range" id="dropdownAngle" min="0" max="360" value="180" step="1">
+                <span id="dropdownAngleValue">180°</span>
+            </div>
+            
+            <label for="dropdownEffect">Animation Effect</label>
+            <select id="dropdownEffect">
+                <option value="none">None</option>
+                <option value="breathing">Breathing (Opacity)</option>
+                <option value="shimmer">Shimmer (Left to Right)</option>
+                <option value="wave">Wave (Top to Bottom)</option>
+                <option value="pulse">Pulse (Scale)</option>
+                <option value="glow">Glow (Shadow)</option>
+                <option value="rotate">Rotate (Hue)</option>
+            </select>
+            
+            <label for="dropdownEffectSpeed">Effect Speed (seconds)</label>
+            <input type="range" id="dropdownEffectSpeed" min="0.5" max="5" value="3" step="0.1">
+            <span id="dropdownEffectSpeedValue">3s</span>
+        </div>
+        
+        <div class="setting-group">
+            <h2>Dropdown Menu Items</h2>
+            
+            <label for="dropdownItemTextColor">Text Color</label>
+            <div class="color-input-wrapper">
+                <input type="color" id="dropdownItemTextColor" value="#000000">
+                <input type="text" id="dropdownItemTextColorHex" placeholder="#000000" value="#000000">
+            </div>
+            
+            <label for="dropdownItemHoverBgColor">Hover Background Color</label>
+            <div class="color-input-wrapper">
+                <input type="color" id="dropdownItemHoverBgColor" value="#f8f9fa">
+                <input type="text" id="dropdownItemHoverBgColorHex" placeholder="#f8f9fa" value="#f8f9fa">
+            </div>
+            
+            <label for="dropdownItemHoverTextColor">Hover Text Color</label>
+            <div class="color-input-wrapper">
+                <input type="color" id="dropdownItemHoverTextColor" value="#000000">
+                <input type="text" id="dropdownItemHoverTextColorHex" placeholder="#000000" value="#000000">
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-save" id="saveBtn">Save Settings</button>
+            <button class="btn-reset" id="resetBtn">Reset to Default</button>
+        </div>
+        
+        <div class="status-message" id="statusMessage">✓ Settings saved successfully!</div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>

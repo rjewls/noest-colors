@@ -1,0 +1,40 @@
+﻿/**
+ * // Default navbar elements configuration (matching website's default order)
+const DEFAULT_NAVBAR_ELEMENTS = [
+  { id: 'ajouter', label: '➕ Ajouter', visible: true, order: 0 },
+  { id: 'ramassage', label: '🚚 Ramassage', visible: true, order: 1 },
+  { id: 'reception', label: '📦 Réception', visible: true, order: 2 },
+  { id: 'dispatch', label: '🔀 Dispatch', visible: true, order: 3 },
+  { id: 'modification', label: '✏️ Demandes de modification', visible: true, order: 4 },
+  { id: 'fdr', label: '📋 Feuilles de route', visible: true, order: 5 },
+  { id: 'livraison', label: '🚛 En Livraison', visible: true, order: 6 },
+  { id: 'suspendu', label: '⚠️ Suspendus', visible: true, order: 7 },
+  { id: 'retours', label: '↩️ Retours', visible: true, order: 8 },
+  { id: 'livres', label: '✅ Livrés', visible: true, order: 9 },
+  { id: 'finance', label: '💰 Finance', visible: true, order: 10 }
+];cript
+ * Handles saving and loading user preferences
+ */
+
+const DEFAULT_NAVBAR = { type: 'solid', color: '#007bff', color1: '#007bff', color2: '#764ba2', angle: 135, effect: 'none', effectSpeed: 3, textColor: '#000000', badgeColor: '#ffffff', badgeBgColor: '#dc3545', hoverBgColor: '#f0f0f0', hoverTextColor: '#000000' };
+const DEFAULT_DROPDOWN = { type: 'solid', color: '#ffffff', color1: '#ffffff', color2: '#f8f9fa', angle: 180, effect: 'none', effectSpeed: 3, itemTextColor: '#000000', itemHoverBgColor: '#f8f9fa', itemHoverTextColor: '#000000' };
+
+// Default navbar elements configuration (matching website's default order)
+const DEFAULT_NAVBAR_ELEMENTS = [
+  { id: 'ajouter', label: '➕ Ajouter', visible: true, order: 0 },
+  { id: 'reception', label: '� Réception', visible: true, order: 1 },
+  { id: 'finance', label: '� Finance', visible: true, order: 2 },
+  { id: 'ramassage', label: '� Ramassage', visible: true, order: 3 },
+  { id: 'dispatch', label: '🔀 Dispatch', visible: true, order: 4 },
+  { id: 'retours', label: '↩️ Retours', visible: true, order: 5 },
+  { id: 'modification', label: '✏️ Demandes de modification', visible: true, order: 6 },
+  { id: 'fdr', label: '📋 Feuilles de route', visible: true, order: 7 },
+  { id: 'livraison', label: '🚛 En Livraison', visible: true, order: 8 },
+  { id: 'suspendu', label: '⚠️ Suspendus', visible: true, order: 9 },
+  { id: 'livres', label: '✅ Livrés', visible: true, order: 10 }
+];
+
+let navbarElements = [...DEFAULT_NAVBAR_ELEMENTS];
+
+// Theme presets - Popular web design color combinations
+const THEMES = {
