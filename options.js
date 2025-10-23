@@ -8,17 +8,17 @@ const DEFAULT_DROPDOWN = { type: 'solid', color: '#ffffff', color1: '#ffffff', c
 
 // Default navbar elements configuration (matching website's default order)
 const DEFAULT_NAVBAR_ELEMENTS = [
-  { id: 'ajouter', label: 'Ajouter', visible: true, order: 0 },
-  { id: 'ramassage', label: 'Ramassage', visible: true, order: 1 },
-  { id: 'reception', label: 'Reception', visible: true, order: 2 },
-  { id: 'dispatch', label: 'Dispatch', visible: true, order: 3 },
-  { id: 'modification', label: 'Demandes de modification', visible: true, order: 4 },
-  { id: 'fdr', label: 'Feuilles de route', visible: true, order: 5 },
-  { id: 'livraison', label: 'En Livraison', visible: true, order: 6 },
-  { id: 'suspendu', label: 'Suspendus', visible: true, order: 7 },
-  { id: 'retours', label: 'Retours', visible: true, order: 8 },
-  { id: 'livres', label: 'Livres', visible: true, order: 9 },
-  { id: 'finance', label: 'Finance', visible: true, order: 10 }
+  { id: 'ajouter', label: 'Ajouter', visible: true },
+  { id: 'ramassage', label: 'Ramassage', visible: true },
+  { id: 'reception', label: 'Reception', visible: true },
+  { id: 'dispatch', label: 'Dispatch', visible: true },
+  { id: 'modification', label: 'Demandes de modification', visible: true },
+  { id: 'fdr', label: 'Feuilles de route', visible: true },
+  { id: 'livraison', label: 'En Livraison', visible: true },
+  { id: 'suspendu', label: 'Suspendus', visible: true },
+  { id: 'retours', label: 'Retours', visible: true },
+  { id: 'livres', label: 'Livres', visible: true },
+  { id: 'finance', label: 'Finance', visible: true }
 ];
 
 let navbarElements = [...DEFAULT_NAVBAR_ELEMENTS];
@@ -371,22 +371,20 @@ function renderNavbarElements() {
   
   container.innerHTML = '';
   
-  // Sort by order
-  const sorted = [...navbarElements].sort((a, b) => a.order - b.order);
-  console.log('Rendering navbar elements in order:', sorted.map(e => `${e.label}:${e.order}`));
+  console.log('Rendering navbar elements in order:', navbarElements.map(e => e.label));
   
-  sorted.forEach((element, index) => {
+  navbarElements.forEach((element, index) => {
     const item = document.createElement('div');
     item.className = `element-item ${!element.visible ? 'hidden-element' : ''}`;
     item.dataset.id = element.id;
     
     item.innerHTML = `
-      <span class="drag-handle">â˜°</span>
+      <span class="drag-handle">≡</span>
       <input type="checkbox" class="element-checkbox" ${element.visible ? 'checked' : ''} data-id="${element.id}">
       <span class="element-label">${element.label}</span>
       <div class="element-controls">
-        <button class="btn-move" data-action="up" data-id="${element.id}" ${index === 0 ? 'disabled' : ''}>â–²</button>
-        <button class="btn-move" data-action="down" data-id="${element.id}" ${index === sorted.length - 1 ? 'disabled' : ''}>â–¼</button>
+        <button class="btn-move" data-action="up" data-id="${element.id}" ${index === 0 ? 'disabled' : ''}>↑</button>
+        <button class="btn-move" data-action="down" data-id="${element.id}" ${index === navbarElements.length - 1 ? 'disabled' : ''}>↓</button>
       </div>
     `;
     
@@ -418,36 +416,24 @@ function handleElementVisibilityChange(e) {
 }
 
 function handleElementMove(e) {
-  const id = e.target.dataset.id;
+  const id = e.target.dataset.action === 'up' ? e.target.dataset.id : e.target.dataset.id;
   const action = e.target.dataset.action;
   
-  const sorted = [...navbarElements].sort((a, b) => a.order - b.order);
-  const currentIndex = sorted.findIndex(el => el.id === id);
+  const currentIndex = navbarElements.findIndex(el => el.id === id);
   
   if (currentIndex === -1) return;
   
   if (action === 'up' && currentIndex > 0) {
-    // Swap with previous element
-    const temp = sorted[currentIndex].order;
-    sorted[currentIndex].order = sorted[currentIndex - 1].order;
-    sorted[currentIndex - 1].order = temp;
+    // Move up: swap with previous
+    [navbarElements[currentIndex - 1], navbarElements[currentIndex]] = [navbarElements[currentIndex], navbarElements[currentIndex - 1]];
     
-    console.log('Moving up:', id, 'from', temp, 'to', sorted[currentIndex].order);
-  } else if (action === 'down' && currentIndex < sorted.length - 1) {
-    // Swap with next element
-    const temp = sorted[currentIndex].order;
-    sorted[currentIndex].order = sorted[currentIndex + 1].order;
-    sorted[currentIndex + 1].order = temp;
+    console.log('Moving up:', id);
+  } else if (action === 'down' && currentIndex < navbarElements.length - 1) {
+    // Move down: swap with next
+    [navbarElements[currentIndex], navbarElements[currentIndex + 1]] = [navbarElements[currentIndex + 1], navbarElements[currentIndex]];
     
-    console.log('Moving down:', id, 'from', temp, 'to', sorted[currentIndex].order);
+    console.log('Moving down:', id);
   }
-  
-  // Update the global array with the new orders
-  navbarElements = sorted.map(element => {
-    return { ...element };
-  });
-  
-  console.log('Updated navbarElements:', navbarElements);
   
   saveNavbarElements();
   renderNavbarElements();
@@ -469,6 +455,15 @@ function loadNavbarElements() {
   chrome.storage.sync.get(['navbarElements'], (result) => {
     if (result.navbarElements) {
       navbarElements = result.navbarElements;
+      // Migrate from old order-based to array-based ordering
+      if (navbarElements.length > 0 && navbarElements[0].hasOwnProperty('order')) {
+        navbarElements = navbarElements.sort((a, b) => a.order - b.order).map(e => {
+          const { order, ...rest } = e;
+          return rest;
+        });
+        // Save the migrated data
+        saveNavbarElements();
+      }
     }
     renderNavbarElements();
   });
@@ -483,13 +478,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       if (confirm('Reset navbar elements to website default order? This will not affect visibility settings.')) {
-        // Reset only the order, keep visibility settings
-        navbarElements = navbarElements.map(element => {
-          const defaultElement = DEFAULT_NAVBAR_ELEMENTS.find(d => d.id === element.id);
-          if (defaultElement) {
-            return { ...element, order: defaultElement.order };
-          }
-          return element;
+        // Reset to default order, keep visibility settings
+        navbarElements = DEFAULT_NAVBAR_ELEMENTS.map(defaultEl => {
+          const currentEl = navbarElements.find(el => el.id === defaultEl.id);
+          return {
+            ...defaultEl,
+            visible: currentEl ? currentEl.visible : defaultEl.visible
+          };
         });
         
         saveNavbarElements();

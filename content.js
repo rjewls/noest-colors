@@ -364,17 +364,17 @@ let dropdownSettings = {
 
 // Default navbar elements configuration (matching website's default order)
 const DEFAULT_NAVBAR_ELEMENTS = [
-  { id: 'ajouter', label: 'Ajouter', icon: 'fa-plus', visible: true, order: 0 },
-  { id: 'ramassage', label: 'Ramassage', icon: 'fa-truck', visible: true, order: 1 },
-  { id: 'reception', label: 'Réception', icon: 'fa-cubes', visible: true, order: 2 },
-  { id: 'dispatch', label: 'Dispatch', icon: 'fa-random', visible: true, order: 3 },
-  { id: 'modification', label: 'Demandes de modification', icon: 'fa-edit', visible: true, order: 4 },
-  { id: 'fdr', label: 'Feuilles de route', icon: 'fa-copy', visible: true, order: 5 },
-  { id: 'livraison', label: 'En Livraison', icon: 'fa-truck', visible: true, order: 6 },
-  { id: 'suspendu', label: 'Suspendus', icon: 'fa-exclamation-triangle', visible: true, order: 7 },
-  { id: 'retours', label: 'Retours', icon: 'fa-reply', visible: true, order: 8 },
-  { id: 'livres', label: 'Livrés', icon: 'fa-check-square', visible: true, order: 9 },
-  { id: 'finance', label: 'Finance', icon: 'fa-dollar-sign', visible: true, order: 10 }
+  { id: 'ajouter', label: 'Ajouter', icon: 'fa-plus', visible: true },
+  { id: 'ramassage', label: 'Ramassage', icon: 'fa-truck', visible: true },
+  { id: 'reception', label: 'Réception', icon: 'fa-cubes', visible: true },
+  { id: 'dispatch', label: 'Dispatch', icon: 'fa-random', visible: true },
+  { id: 'modification', label: 'Demandes de modification', icon: 'fa-edit', visible: true },
+  { id: 'fdr', label: 'Feuilles de route', icon: 'fa-copy', visible: true },
+  { id: 'livraison', label: 'En Livraison', icon: 'fa-truck', visible: true },
+  { id: 'suspendu', label: 'Suspendus', icon: 'fa-exclamation-triangle', visible: true },
+  { id: 'retours', label: 'Retours', icon: 'fa-reply', visible: true },
+  { id: 'livres', label: 'Livrés', icon: 'fa-check-square', visible: true },
+  { id: 'finance', label: 'Finance', icon: 'fa-dollar-sign', visible: true }
 ];
 
 let navbarElements = [...DEFAULT_NAVBAR_ELEMENTS];
@@ -472,6 +472,14 @@ chrome.storage.sync.get(['navbarSettings', 'dropdownSettings', 'navbarElements']
   navbarSettings = result.navbarSettings || navbarSettings;
   dropdownSettings = result.dropdownSettings || dropdownSettings;
   navbarElements = result.navbarElements || navbarElements;
+  
+  // Migrate from old order-based to array-based ordering
+  if (navbarElements.length > 0 && navbarElements[0].hasOwnProperty('order')) {
+    navbarElements = navbarElements.sort((a, b) => a.order - b.order).map(e => {
+      const { order, ...rest } = e;
+      return rest;
+    });
+  }
   
   console.log('🎨 Navbar Settings:', navbarSettings);
   console.log('📋 Dropdown Settings:', dropdownSettings);
@@ -903,21 +911,21 @@ function getNavbarElementByIdentifier(element) {
     hasIcons: element.querySelectorAll('svg, i').length > 0
   });
   
-  if (text.includes('ajouter') || hasIcon('fa-plus')) return 'ajouter';
-  if (text.includes('ramassage') || hasIcon('fa-truck')) {
+  if (text.includes('ajouter') && hasIcon('fa-plus')) return 'ajouter';
+  if (text.includes('ramassage') && hasIcon('fa-truck')) {
     // Distinguish between Ramassage and En Livraison
     if (element.id === 'collect_li' || element.textContent.includes('Ramassage')) return 'ramassage';
     if (element.id === 'livraison_li' || text.includes('en livraison')) return 'livraison';
   }
-  if (text.includes('réception') || text.includes('reception') || hasIcon('fa-cubes')) return 'reception';
-  if (text.includes('dispatch') || hasIcon('fa-random')) return 'dispatch';
-  if (text.includes('modification') || hasIcon('fa-edit')) return 'modification';
-  if (text.includes('feuilles de route') || text.includes('fdr') || hasIcon('fa-copy')) return 'fdr';
+  if (text.includes('finance') && hasIcon('fa-dollar-sign')) return 'finance';
+  if (text.includes('réception') && hasIcon('fa-cubes')) return 'reception';
   if (element.id === 'livraison_li' || (text.includes('en livraison') && hasIcon('fa-truck'))) return 'livraison';
   if (element.id === 'livechou_li' || text.includes('suspendu') || text.includes('suspendus')) return 'suspendu';
-  if (element.id === 'return_li' || text.includes('retours') || hasIcon('fa-reply')) return 'retours';
-  if (element.id === 'livred_li' || text.includes('livrés') || text.includes('livres') || hasIcon('fa-check-square')) return 'livres';
-  if (text.includes('finance') || hasIcon('fa-dollar-sign')) return 'finance';
+  if (element.id === 'return_li' || (text.includes('retours') && hasIcon('fa-reply'))) return 'retours';
+  if (element.id === 'livred_li' || ((text.includes('livrés') || text.includes('livres')) && hasIcon('fa-check-square'))) return 'livres';
+  if (text.includes('dispatch') && hasIcon('fa-random')) return 'dispatch';
+  if (text.includes('modification') && hasIcon('fa-edit')) return 'modification';
+  if ((text.includes('feuilles de route') || text.includes('fdr')) && hasIcon('fa-copy')) return 'fdr';
   
   return null;
 }
@@ -974,7 +982,6 @@ function applyNavbarElementSettings() {
   console.log('✅ Navbar list found!');
     
   console.log('✓ Applying navbar element settings', navbarElements);
-  console.log('📊 RAW ORDER VALUES:', navbarElements.map(e => `${e.id}=${e.order}`).join(', '));
   
   // Log which elements should be hidden
   const hiddenElements = navbarElements.filter(e => !e.visible);
@@ -994,10 +1001,10 @@ function applyNavbarElementSettings() {
     }
   });
   
-  // Sort navbar elements by order
-  const sortedElements = [...navbarElements].sort((a, b) => a.order - b.order);
+  // Use navbar elements in array order
+  const sortedElements = [...navbarElements];
   
-  console.log('✓ Sorted elements by order:', sortedElements.map(e => `${e.id}:${e.order}`));
+  console.log('✓ Elements in order:', sortedElements.map(e => e.id));
   console.log('📋 EXPECTED FINAL ORDER:', sortedElements.map((e, i) => `${i+1}. ${e.id}`).join(', '));
   
   // Add CSS rule to hide elements FIRST (before any manipulation)
@@ -1060,11 +1067,12 @@ function applyNavbarElementSettings() {
     if (identifier) {
       const config = navbarElements.find(e => e.id === identifier);
       if (config) {
-        console.log(`   Found config for ${identifier}: order=${config.order}, visible=${config.visible}`);
+        const orderIndex = navbarElements.findIndex(e => e.id === identifier);
+        console.log(`   Found config for ${identifier}: order=${orderIndex}, visible=${config.visible}`);
         elementsWithOrder.push({
           element: item,
           id: identifier,
-          order: config.order,
+          order: orderIndex,
           visible: config.visible
         });
       } else {
@@ -1075,7 +1083,7 @@ function applyNavbarElementSettings() {
   
   console.log('📦 Elements BEFORE sorting:', elementsWithOrder.map(e => `${e.id}:${e.order}`).join(', '));
   
-  // Sort by order
+  // Sort by order (now based on array position)
   elementsWithOrder.sort((a, b) => a.order - b.order);
   
   console.log('📦 Elements AFTER sorting:', elementsWithOrder.map(e => `${e.id}:${e.order}`).join(', '));
@@ -1155,6 +1163,9 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 // Create a dedicated observer for the navbar to continuously remove hidden elements
 let navbarObserver = null;
 let hiddenElementsStyleTag = null;
+let reorderTimeout = null;
+let isReordering = false;
+let lastReorderTime = 0;
 
 // Function to add CSS that hides elements
 function addHiddenElementsCSS(hiddenIds) {
@@ -1242,32 +1253,95 @@ function startNavbarObserver() {
   
   // Create new observer
   navbarObserver = new MutationObserver((mutations) => {
-    // Get all menu items
-    const menuItems = Array.from(navbarList.children).filter(child => child.tagName === 'LI');
-  
-  // Process each item
-  menuItems.forEach(item => {
-    const identifier = getNavbarElementByIdentifier(item);
-    if (identifier) {
-      // Add data attribute for CSS targeting
-      item.setAttribute('data-navbar-element', identifier);
-      
-      const config = navbarElements.find(e => e.id === identifier);
-      if (config && !config.visible) {
-        // Hide and remove
-        item.style.setProperty('display', 'none', 'important');
-        setTimeout(() => {
-          if (item.parentNode) {
-            item.remove();
-            console.log('🗑️ Auto-removed hidden element:', identifier);
-          }
-        }, 0);
+    let hasChildListChanges = false;
+    
+    mutations.forEach(mutation => {
+      if (mutation.type === 'childList') {
+        hasChildListChanges = true;
       }
+    });
+    
+    if (hasChildListChanges && !isReordering && (Date.now() - lastReorderTime > 2000)) {
+      // Clear any existing reorder timeout
+      if (reorderTimeout) {
+        clearTimeout(reorderTimeout);
+      }
+      
+      // Schedule reordering after a short delay
+      reorderTimeout = setTimeout(() => {
+        isReordering = true;
+        lastReorderTime = Date.now();
+        console.log('🔄 Detected navbar changes, reordering...');
+        const navbarList = document.querySelector('ul.nav.navbar-nav');
+        if (navbarList) {
+          // Re-run just the reordering part
+          const menuItems = Array.from(navbarList.children).filter(child => child.tagName === 'LI');
+          console.log('📊 Found', menuItems.length, 'menu items');
+          
+          const elementsWithOrder = [];
+          menuItems.forEach((item, index) => {
+            const identifier = getNavbarElementByIdentifier(item);
+            console.log(`   Item ${index}: ${identifier || 'UNIDENTIFIED'} - "${item.textContent.trim().substring(0, 30)}"`);
+            if (identifier) {
+              const config = navbarElements.find(e => e.id === identifier);
+              if (config) {
+                const orderIndex = navbarElements.findIndex(e => e.id === identifier);
+                elementsWithOrder.push({
+                  element: item,
+                  id: identifier,
+                  order: orderIndex,
+                  visible: config.visible
+                });
+              }
+            }
+          });
+          
+          console.log('📦 Elements to reorder:', elementsWithOrder.map(e => `${e.id}(order:${e.order})`).join(', '));
+          
+          elementsWithOrder.sort((a, b) => a.order - b.order);
+          
+          console.log('📦 After sorting:', elementsWithOrder.map(e => e.id).join(', '));
+          
+          const detachedElements = elementsWithOrder.map(item => {
+            if (item.element.parentNode) {
+              item.element.parentNode.removeChild(item.element);
+            }
+            return item;
+          });
+          
+          detachedElements.forEach((item) => {
+            navbarList.appendChild(item.element);
+          });
+          
+          console.log('✅ Reordered navbar elements after DOM changes');
+        }
+        isReordering = false;
+        reorderTimeout = null;
+      }, 1000);
     }
-  });
-});
-
-// Observe the navbar list for any changes
+    
+    // Process each item for visibility (existing logic)
+    const menuItems = Array.from(navbarList.children).filter(child => child.tagName === 'LI');
+    menuItems.forEach(item => {
+      const identifier = getNavbarElementByIdentifier(item);
+      if (identifier) {
+        // Add data attribute for CSS targeting
+        item.setAttribute('data-navbar-element', identifier);
+        
+        const config = navbarElements.find(e => e.id === identifier);
+        if (config && !config.visible) {
+          // Hide and remove
+          item.style.setProperty('display', 'none', 'important');
+          setTimeout(() => {
+            if (item.parentNode) {
+              item.remove();
+              console.log('🗑️ Auto-removed hidden element:', identifier);
+            }
+          }, 0);
+        }
+      }
+    });
+  });// Observe the navbar list for any changes
 navbarObserver.observe(navbarList, {
   childList: true,
   subtree: true
