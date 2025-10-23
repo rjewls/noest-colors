@@ -4,24 +4,93 @@
  */
 
 const DEFAULT_NAVBAR = { type: 'solid', color: '#007bff', color1: '#007bff', color2: '#764ba2', angle: 135, effect: 'none', effectSpeed: 3, textColor: '#000000', badgeColor: '#ffffff', badgeBgColor: '#dc3545', hoverBgColor: '#f0f0f0', hoverTextColor: '#000000' };
-const DEFAULT_DROPDOWN = { type: 'solid', color: '#ffffff', color1: '#ffffff', color2: '#f8f9fa', angle: 180, effect: 'none', effectSpeed: 3, itemTextColor: '#000000', itemHoverBgColor: '#f8f9fa', itemHoverTextColor: '#000000' };
+const DEFAULT_DROPDOWN = { type: 'solid', color: '#ffffff', color1: '#ffffff', color2: '#f8f9fa', angle: 180, effect: 'none', effectSpeed: 3, itemTextColor: '#000000', itemHoverBgColor: '#f8f9fa', itemHoverTextColor: '#000000', loginMenuTextColor: '#000000', notificationMenuTextColor: '#ffffff' };
 
 // Default navbar elements configuration (matching website's default order)
 const DEFAULT_NAVBAR_ELEMENTS = [
-  { id: 'ajouter', label: 'Ajouter', visible: true },
-  { id: 'ramassage', label: 'Ramassage', visible: true },
-  { id: 'reception', label: 'Reception', visible: true },
-  { id: 'dispatch', label: 'Dispatch', visible: true },
-  { id: 'modification', label: 'Demandes de modification', visible: true },
-  { id: 'fdr', label: 'Feuilles de route', visible: true },
-  { id: 'livraison', label: 'En Livraison', visible: true },
-  { id: 'suspendu', label: 'Suspendus', visible: true },
-  { id: 'retours', label: 'Retours', visible: true },
-  { id: 'livres', label: 'Livres', visible: true },
-  { id: 'finance', label: 'Finance', visible: true }
+  { id: 'ajouter', label: 'Ajouter', visible: true, order: 0 },
+  { id: 'ramassage', label: 'Ramassage', visible: true, order: 1 },
+  { id: 'reception', label: 'Reception', visible: true, order: 2 },
+  { id: 'dispatch', label: 'Dispatch', visible: true, order: 3 },
+  { id: 'modification', label: 'Demandes de modification', visible: true, order: 4 },
+  { id: 'fdr', label: 'Feuilles de route', visible: true, order: 5 },
+  { id: 'livraison', label: 'En Livraison', visible: true, order: 6 },
+  { id: 'suspendu', label: 'Suspendus', visible: true, order: 7 },
+  { id: 'retours', label: 'Retours', visible: true, order: 8 },
+  { id: 'livres', label: 'Livres', visible: true, order: 9 },
+  { id: 'finance', label: 'Finance', visible: true, order: 10 }
 ];
 
 let navbarElements = [...DEFAULT_NAVBAR_ELEMENTS];
+
+// Default dropdown items configuration (organized by parent navbar element)
+const DEFAULT_DROPDOWN_ITEMS = {
+  'ajouter': [
+    { id: 'expedier-colis', label: 'Expedier un colis', icon: 'fa-plus-circle', visible: true },
+    { id: 'expedier-interne', label: 'Expedier un colis interne', icon: 'fa-building', visible: true }
+  ],
+  'ramassage': [
+    { id: 'colis-ramasser', label: 'Colis a ramasser', icon: 'fa-hourglass-start', visible: true },
+    { id: 'colis-ramassage', label: 'Colis en ramassage', icon: 'fa-truck', visible: true },
+    { id: 'colis-ramassage-stock', label: 'Colis en ramassage [Stock]', icon: 'fa-truck', visible: true },
+    { id: 'colis-transit', label: 'Colis en transit', icon: 'fa-exchange-alt', visible: true }
+  ],
+  'reception': [
+    { id: 'sacs-valider', label: 'Sacs a valider', icon: 'fa-long-arrow-alt-right', visible: true },
+    { id: 'colis-valider', label: 'Colis a valider', icon: 'fa-check', visible: true },
+    { id: 'sacs-perdus', label: 'Sacs Perdus', icon: 'fa-exclamation-triangle', visible: true },
+    { id: 'colis-transferer', label: 'Colis à transférer', icon: 'fa-random', visible: true },
+    { id: 'sacs-sortants', label: 'Sacs sortants', icon: 'fa-long-arrow-alt-left', visible: true }
+  ],
+  'dispatch': [
+    { id: 'dispatch-main', label: 'Dispatch', icon: 'fa-random', visible: true },
+    { id: 'stop-desk', label: 'Stop Desk', icon: 'fa-pause', visible: true },
+    { id: 'vente-achat', label: 'Vente ET Achat', icon: 'fa-dollar-sign', visible: true },
+    { id: 'colis-internes', label: 'Colis internes', icon: 'fa-building', visible: true },
+    { id: 'historique-internes', label: 'Historique Colis internes', icon: 'fa-history', visible: true }
+  ],
+  'modification': [
+    { id: 'demandes-cours', label: 'Demandes en cours', icon: 'fa-edit', visible: true },
+    { id: 'demandes-traitees', label: 'Demandes traitées', icon: 'fa-calendar', visible: true }
+  ],
+  'fdr': [
+    { id: 'creer-fdr', label: 'Créer une feuille de route', icon: 'fe-file-text', visible: true },
+    { id: 'activation-fdr', label: 'Activation des feuilles de route', icon: 'fe-zap', visible: true },
+    { id: 'liste-fdr', label: 'Liste des feuilles de route', icon: 'fe-layers', visible: true },
+    { id: 'archive-fdr', label: 'Archive des feuilles de route', icon: 'fa-archive', visible: true }
+  ],
+  'retours': [
+    { id: 'chez-livreur', label: 'Chez livreur', icon: 'fa-truck', visible: true },
+    { id: 'retours-dispatch-admin', label: 'A dispatcher', icon: 'fa-random', visible: true, section: 'hub-admin' },
+    { id: 'retours-transit-admin', label: 'En transit', icon: 'fa-exchange-alt', visible: true, section: 'hub-admin' },
+    { id: 'retours-dispatch-entrepot', label: 'A dispatcher', icon: 'fa-random', visible: true, section: 'entrepot' },
+    { id: 'retours-transit-entrepot', label: 'En transit', icon: 'fa-exchange-alt', visible: true, section: 'entrepot' },
+    { id: 'retours-historique-entrepot', label: 'Historique', icon: 'fa-history', visible: true, section: 'entrepot' },
+    { id: 'retours-dispatch-partenaires', label: 'A dispatcher', icon: 'fa-random', visible: true, section: 'partenaires' },
+    { id: 'retours-transit-partenaires', label: 'En transit', icon: 'fa-exchange-alt', visible: true, section: 'partenaires' },
+    { id: 'retours-historique-partenaires', label: 'Historique', icon: 'fa-history', visible: true, section: 'partenaires' }
+  ],
+  'livres': [
+    { id: 'non-encaisse', label: 'Non Encaissés', icon: 'fa-clock', visible: true },
+    { id: 'encaisse-non-verse', label: 'Encaissés non versés', icon: 'fa-dollar-sign', visible: true },
+    { id: 'encaisse-verse', label: 'Encaissés et versés à la caisse', icon: 'fa-level-up-alt', visible: true },
+    { id: 'ancien-historique', label: 'Ancien Historique', icon: 'fa-history', visible: true }
+  ],
+  'finance': [
+    { id: 'reception-versement-admin', label: 'Réception versement admin', icon: 'fa-check', visible: true, section: 'reception' },
+    { id: 'depot-partenaire', label: 'Dépot d\'argent partenaire', icon: 'fa-user-plus', visible: true, section: 'reception' },
+    { id: 'depenses-charges', label: 'Dépenses (charges)', icon: 'fa-exchange-alt', visible: true, section: 'sortie' },
+    { id: 'retrait-partenaire', label: 'Retrait d\'argent partenaire', icon: 'fa-user-minus', visible: true, section: 'sortie' },
+    { id: 'pvs-caisse', label: 'PVs de caisse', icon: 'fa-funnel-dollar', visible: true, section: 'payments' },
+    { id: 'pvs-transit', label: 'PVs en transit', icon: 'fa-exchange-alt', visible: true, section: 'payments' },
+    { id: 'pvs-archives', label: 'PVs archivés', icon: 'fa-history', visible: true, section: 'payments' },
+    { id: 'caisse-hub', label: 'Caisse', icon: 'fa-hand-holding-usd', visible: true, section: 'caisse' },
+    { id: 'historique-mouvements', label: 'Historique des mouvements', icon: 'fa-history', visible: true, section: 'caisse' }
+  ]
+};
+
+let dropdownItems = { ...DEFAULT_DROPDOWN_ITEMS };
+
 // Theme presets - Popular web design color combinations
 const THEMES = {
   sunset: {
@@ -287,6 +356,12 @@ const dropdownItemHoverBgColorHex = document.getElementById('dropdownItemHoverBg
 const dropdownItemHoverTextColor = document.getElementById('dropdownItemHoverTextColor');
 const dropdownItemHoverTextColorHex = document.getElementById('dropdownItemHoverTextColorHex');
 
+// Special menu override elements
+const loginMenuTextColor = document.getElementById('loginMenuTextColor');
+const loginMenuTextColorHex = document.getElementById('loginMenuTextColorHex');
+const notificationMenuTextColor = document.getElementById('notificationMenuTextColor');
+const notificationMenuTextColorHex = document.getElementById('notificationMenuTextColorHex');
+
 const saveBtn = document.getElementById('saveBtn');
 const resetBtn = document.getElementById('resetBtn');
 const statusMessage = document.getElementById('statusMessage');
@@ -331,6 +406,12 @@ dropdownItemHoverBgColorHex.addEventListener('input', () => syncColor(dropdownIt
 dropdownItemHoverTextColor.addEventListener('change', () => syncHex(dropdownItemHoverTextColor, dropdownItemHoverTextColorHex));
 dropdownItemHoverTextColorHex.addEventListener('input', () => syncColor(dropdownItemHoverTextColorHex, dropdownItemHoverTextColor));
 
+// Special menu override sync listeners
+loginMenuTextColor.addEventListener('change', () => syncHex(loginMenuTextColor, loginMenuTextColorHex));
+loginMenuTextColorHex.addEventListener('input', () => syncColor(loginMenuTextColorHex, loginMenuTextColor));
+notificationMenuTextColor.addEventListener('change', () => syncHex(notificationMenuTextColor, notificationMenuTextColorHex));
+notificationMenuTextColorHex.addEventListener('input', () => syncColor(notificationMenuTextColorHex, notificationMenuTextColor));
+
 navbarAngle.addEventListener('input', () => navbarAngleValue.textContent = navbarAngle.value + 'Â°');
 dropdownAngle.addEventListener('input', () => dropdownAngleValue.textContent = dropdownAngle.value + 'Â°');
 
@@ -371,20 +452,22 @@ function renderNavbarElements() {
   
   container.innerHTML = '';
   
-  console.log('Rendering navbar elements in order:', navbarElements.map(e => e.label));
+  // Sort by order
+  const sorted = [...navbarElements].sort((a, b) => a.order - b.order);
+  console.log('Rendering navbar elements in order:', sorted.map(e => `${e.label}:${e.order}`));
   
-  navbarElements.forEach((element, index) => {
+  sorted.forEach((element, index) => {
     const item = document.createElement('div');
     item.className = `element-item ${!element.visible ? 'hidden-element' : ''}`;
     item.dataset.id = element.id;
     
     item.innerHTML = `
-      <span class="drag-handle">≡</span>
+      <span class="drag-handle">â˜°</span>
       <input type="checkbox" class="element-checkbox" ${element.visible ? 'checked' : ''} data-id="${element.id}">
       <span class="element-label">${element.label}</span>
       <div class="element-controls">
-        <button class="btn-move" data-action="up" data-id="${element.id}" ${index === 0 ? 'disabled' : ''}>↑</button>
-        <button class="btn-move" data-action="down" data-id="${element.id}" ${index === navbarElements.length - 1 ? 'disabled' : ''}>↓</button>
+        <button class="btn-move" data-action="up" data-id="${element.id}" ${index === 0 ? 'disabled' : ''}>â–²</button>
+        <button class="btn-move" data-action="down" data-id="${element.id}" ${index === sorted.length - 1 ? 'disabled' : ''}>â–¼</button>
       </div>
     `;
     
@@ -416,24 +499,36 @@ function handleElementVisibilityChange(e) {
 }
 
 function handleElementMove(e) {
-  const id = e.target.dataset.action === 'up' ? e.target.dataset.id : e.target.dataset.id;
+  const id = e.target.dataset.id;
   const action = e.target.dataset.action;
   
-  const currentIndex = navbarElements.findIndex(el => el.id === id);
+  const sorted = [...navbarElements].sort((a, b) => a.order - b.order);
+  const currentIndex = sorted.findIndex(el => el.id === id);
   
   if (currentIndex === -1) return;
   
   if (action === 'up' && currentIndex > 0) {
-    // Move up: swap with previous
-    [navbarElements[currentIndex - 1], navbarElements[currentIndex]] = [navbarElements[currentIndex], navbarElements[currentIndex - 1]];
+    // Swap with previous element
+    const temp = sorted[currentIndex].order;
+    sorted[currentIndex].order = sorted[currentIndex - 1].order;
+    sorted[currentIndex - 1].order = temp;
     
-    console.log('Moving up:', id);
-  } else if (action === 'down' && currentIndex < navbarElements.length - 1) {
-    // Move down: swap with next
-    [navbarElements[currentIndex], navbarElements[currentIndex + 1]] = [navbarElements[currentIndex + 1], navbarElements[currentIndex]];
+    console.log('Moving up:', id, 'from', temp, 'to', sorted[currentIndex].order);
+  } else if (action === 'down' && currentIndex < sorted.length - 1) {
+    // Swap with next element
+    const temp = sorted[currentIndex].order;
+    sorted[currentIndex].order = sorted[currentIndex + 1].order;
+    sorted[currentIndex + 1].order = temp;
     
-    console.log('Moving down:', id);
+    console.log('Moving down:', id, 'from', temp, 'to', sorted[currentIndex].order);
   }
+  
+  // Update the global array with the new orders
+  navbarElements = sorted.map(element => {
+    return { ...element };
+  });
+  
+  console.log('Updated navbarElements:', navbarElements);
   
   saveNavbarElements();
   renderNavbarElements();
@@ -455,19 +550,134 @@ function loadNavbarElements() {
   chrome.storage.sync.get(['navbarElements'], (result) => {
     if (result.navbarElements) {
       navbarElements = result.navbarElements;
-      // Migrate from old order-based to array-based ordering
-      if (navbarElements.length > 0 && navbarElements[0].hasOwnProperty('order')) {
-        navbarElements = navbarElements.sort((a, b) => a.order - b.order).map(e => {
-          const { order, ...rest } = e;
-          return rest;
-        });
-        // Save the migrated data
-        saveNavbarElements();
-      }
     }
     renderNavbarElements();
   });
 }
+
+// Dropdown items functions
+function saveDropdownItems() {
+  console.log('Saving dropdown items:', dropdownItems);
+  chrome.storage.sync.set({ dropdownItems }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('Error saving dropdown items:', chrome.runtime.lastError);
+    } else {
+      console.log('Dropdown items saved successfully');
+      // Verify what was saved
+      chrome.storage.sync.get(['dropdownItems'], (result) => {
+        console.log('✓ Verified saved dropdown items:', result.dropdownItems);
+      });
+    }
+  });
+}
+
+function loadDropdownItems() {
+  chrome.storage.sync.get(['dropdownItems'], (result) => {
+    if (result.dropdownItems) {
+      dropdownItems = result.dropdownItems;
+    }
+    renderDropdownItems();
+  });
+}
+
+function renderDropdownItems() {
+  const container = document.getElementById('dropdownItemsContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  // Get navbar elements that have dropdowns
+  const navbarElementsWithDropdowns = DEFAULT_NAVBAR_ELEMENTS.filter(element => 
+    DEFAULT_DROPDOWN_ITEMS[element.id] && DEFAULT_DROPDOWN_ITEMS[element.id].length > 0
+  );
+  
+  navbarElementsWithDropdowns.forEach(navbarElement => {
+    const section = document.createElement('div');
+    section.className = 'dropdown-section';
+    
+    const dropdownItemsForElement = dropdownItems[navbarElement.id] || DEFAULT_DROPDOWN_ITEMS[navbarElement.id] || [];
+    
+    section.innerHTML = `
+      <div class="dropdown-section-header">
+        <span class="dropdown-section-icon">${getIconForNavbarElement(navbarElement.id)}</span>
+        <h3 class="dropdown-section-title">${navbarElement.label} Dropdown</h3>
+      </div>
+      <div class="dropdown-items-list">
+        ${dropdownItemsForElement.map(item => `
+          <div class="dropdown-item ${!item.visible ? 'hidden-item' : ''}" data-parent="${navbarElement.id}" data-id="${item.id}">
+            <input type="checkbox" class="dropdown-item-checkbox" ${item.visible ? 'checked' : ''} data-parent="${navbarElement.id}" data-id="${item.id}">
+            <span class="dropdown-item-label">${item.label}</span>
+            ${item.section ? `<span class="dropdown-item-section">${item.section}</span>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `;
+    
+    container.appendChild(section);
+  });
+  
+  // Add event listeners
+  const checkboxes = container.querySelectorAll('.dropdown-item-checkbox');
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', handleDropdownItemVisibilityChange);
+  });
+}
+
+function handleDropdownItemVisibilityChange(e) {
+  const parentId = e.target.dataset.parent;
+  const itemId = e.target.dataset.id;
+  const isVisible = e.target.checked;
+  
+  if (dropdownItems[parentId]) {
+    const item = dropdownItems[parentId].find(item => item.id === itemId);
+    if (item) {
+      item.visible = isVisible;
+      saveDropdownItems();
+      renderDropdownItems();
+    }
+  }
+}
+
+function getIconForNavbarElement(elementId) {
+  const icons = {
+    'ajouter': '➕',
+    'ramassage': '🚚',
+    'reception': '📦',
+    'dispatch': '🔀',
+    'modification': '✏️',
+    'fdr': '📄',
+    'retours': '↩️',
+    'livres': '✅',
+    'finance': '💰'
+  };
+  return icons[elementId] || '📋';
+}
+
+// Load dropdown items when page loads
+document.addEventListener('DOMContentLoaded', loadDropdownItems);
+
+// Reset dropdown items button
+document.addEventListener('DOMContentLoaded', () => {
+  const resetDropdownBtn = document.getElementById('resetDropdownItemsBtn');
+  if (resetDropdownBtn) {
+    resetDropdownBtn.addEventListener('click', () => {
+      if (confirm('Reset all dropdown items to default visibility? All items will be shown.')) {
+        dropdownItems = JSON.parse(JSON.stringify(DEFAULT_DROPDOWN_ITEMS)); // Deep copy
+        saveDropdownItems();
+        renderDropdownItems();
+        
+        // Show confirmation
+        const originalText = resetDropdownBtn.textContent;
+        resetDropdownBtn.textContent = '✓ Reset Complete!';
+        resetDropdownBtn.style.background = '#28a745';
+        setTimeout(() => {
+          resetDropdownBtn.textContent = originalText;
+          resetDropdownBtn.style.background = '#6c757d';
+        }, 2000);
+      }
+    });
+  }
+});
 
 // Load navbar elements when page loads
 document.addEventListener('DOMContentLoaded', loadNavbarElements);
@@ -478,13 +688,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       if (confirm('Reset navbar elements to website default order? This will not affect visibility settings.')) {
-        // Reset to default order, keep visibility settings
-        navbarElements = DEFAULT_NAVBAR_ELEMENTS.map(defaultEl => {
-          const currentEl = navbarElements.find(el => el.id === defaultEl.id);
-          return {
-            ...defaultEl,
-            visible: currentEl ? currentEl.visible : defaultEl.visible
-          };
+        // Reset only the order, keep visibility settings
+        navbarElements = navbarElements.map(element => {
+          const defaultElement = DEFAULT_NAVBAR_ELEMENTS.find(d => d.id === element.id);
+          if (defaultElement) {
+            return { ...element, order: defaultElement.order };
+          }
+          return element;
         });
         
         saveNavbarElements();
@@ -513,6 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
           
           // Reset to defaults
           navbarElements = [...DEFAULT_NAVBAR_ELEMENTS];
+          dropdownItems = { ...DEFAULT_DROPDOWN_ITEMS };
           
           // Show confirmation
           const originalText = clearBtn.textContent;
@@ -721,7 +932,9 @@ function saveSettings() {
     effectSpeed: dropdownEffectSpeed.value,
     itemTextColor: dropdownItemTextColor.value,
     itemHoverBgColor: dropdownItemHoverBgColor.value,
-    itemHoverTextColor: dropdownItemHoverTextColor.value
+    itemHoverTextColor: dropdownItemHoverTextColor.value,
+    loginMenuTextColor: loginMenuTextColor.value,
+    notificationMenuTextColor: notificationMenuTextColor.value
   };
   
   chrome.storage.sync.set({ navbarSettings, dropdownSettings, navbarElements }, () => {
@@ -791,6 +1004,12 @@ function loadSettings() {
     dropdownItemHoverBgColorHex.value = dropdown.itemHoverBgColor || '#f8f9fa';
     dropdownItemHoverTextColor.value = dropdown.itemHoverTextColor || '#000000';
     dropdownItemHoverTextColorHex.value = dropdown.itemHoverTextColor || '#000000';
+    
+    // Set special menu overrides
+    loginMenuTextColor.value = dropdown.loginMenuTextColor || '#000000';
+    loginMenuTextColorHex.value = dropdown.loginMenuTextColor || '#000000';
+    notificationMenuTextColor.value = dropdown.notificationMenuTextColor || '#ffffff';
+    notificationMenuTextColorHex.value = dropdown.notificationMenuTextColor || '#ffffff';
   });
 }
 
