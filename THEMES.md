@@ -141,3 +141,13 @@ These themes are inspired by:
 4. **Candy Pop** - Most visually striking, great for demos
 
 Enjoy your beautifully themed Noest Hub interface! 🚀
+
+Badge Background Color
+#8191a2
+Badge Background Color
+#a2202d
+Hover Text Color
+white
+Dropdown Menu Items
+Hover Background Color
+#c82838
