@@ -142,6 +142,8 @@ These themes are inspired by:
 
 Enjoy your beautifully themed Noest Hub interface! 🚀
 
+
+corporate gray custom
 Badge Background Color
 #8191a2
 Badge Background Color
@@ -151,3 +153,18 @@ white
 Dropdown Menu Items
 Hover Background Color
 #c82838
+
+noest red and blue custom 
+
+
+start color #1A2A3A
+end color #3e576f
+135 angle
+Badge Background Color
+#cb061a
+Hover Background Color
+#cb061a
+Dropdown Menu Items
+Hover Background Color
+#cb061a
+everything else in dropdown menu is black

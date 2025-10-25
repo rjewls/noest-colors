@@ -650,14 +650,14 @@ let dropdownSettings = {
 const DEFAULT_NAVBAR_ELEMENTS = [
   { id: 'ajouter', label: 'Ajouter', icon: 'fa-plus', visible: true, order: 0 },
   { id: 'ramassage', label: 'Ramassage', icon: 'fa-truck', visible: true, order: 1 },
-  { id: 'reception', label: 'Réception', icon: 'fa-cubes', visible: true, order: 2 },
+  { id: 'reception', label: 'Rï¿½ception', icon: 'fa-cubes', visible: true, order: 2 },
   { id: 'dispatch', label: 'Dispatch', icon: 'fa-random', visible: true, order: 3 },
   { id: 'modification', label: 'Demandes de modification', icon: 'fa-edit', visible: true, order: 4 },
   { id: 'fdr', label: 'Feuilles de route', icon: 'fa-copy', visible: true, order: 5 },
   { id: 'livraison', label: 'En Livraison', icon: 'fa-truck', visible: true, order: 6 },
   { id: 'suspendu', label: 'Suspendus', icon: 'fa-exclamation-triangle', visible: true, order: 7 },
   { id: 'retours', label: 'Retours', icon: 'fa-reply', visible: true, order: 8 },
-  { id: 'livres', label: 'Livrés', icon: 'fa-check-square', visible: true, order: 9 },
+  { id: 'livres', label: 'Livrï¿½s', icon: 'fa-check-square', visible: true, order: 9 },
   { id: 'finance', label: 'Finance', icon: 'fa-dollar-sign', visible: true, order: 10 }
 ];
 
@@ -677,7 +677,7 @@ const DEFAULT_DROPDOWN_ITEMS = {
     { id: 'sacs-valider', label: 'Sacs a valider', icon: 'fa-long-arrow-alt-right', visible: true },
     { id: 'colis-valider', label: 'Colis a valider', icon: 'fa-check', visible: true },
     { id: 'sacs-perdus', label: 'Sacs Perdus', icon: 'fa-exclamation-triangle', visible: true },
-    { id: 'colis-transferer', label: 'Colis à transférer', icon: 'fa-random', visible: true },
+    { id: 'colis-transferer', label: 'Colis ï¿½ transfï¿½rer', icon: 'fa-random', visible: true },
     { id: 'sacs-sortants', label: 'Sacs sortants', icon: 'fa-long-arrow-alt-left', visible: true }
   ],
   'dispatch': [
@@ -689,10 +689,10 @@ const DEFAULT_DROPDOWN_ITEMS = {
   ],
   'modification': [
     { id: 'demandes-cours', label: 'Demandes en cours', icon: 'fa-edit', visible: true },
-    { id: 'demandes-traitees', label: 'Demandes traitées', icon: 'fa-calendar', visible: true }
+    { id: 'demandes-traitees', label: 'Demandes traitï¿½es', icon: 'fa-calendar', visible: true }
   ],
   'fdr': [
-    { id: 'creer-fdr', label: 'Créer une feuille de route', icon: 'fe-file-text', visible: true },
+    { id: 'creer-fdr', label: 'Crï¿½er une feuille de route', icon: 'fe-file-text', visible: true },
     { id: 'activation-fdr', label: 'Activation des feuilles de route', icon: 'fe-zap', visible: true },
     { id: 'liste-fdr', label: 'Liste des feuilles de route', icon: 'fe-layers', visible: true },
     { id: 'archive-fdr', label: 'Archive des feuilles de route', icon: 'fa-archive', visible: true }
@@ -709,19 +709,19 @@ const DEFAULT_DROPDOWN_ITEMS = {
     { id: 'retours-historique-partenaires', label: 'Historique', icon: 'fa-history', visible: true, section: 'partenaires' }
   ],
   'livres': [
-    { id: 'non-encaisse', label: 'Non Encaissés', icon: 'fa-clock', visible: true },
-    { id: 'encaisse-non-verse', label: 'Encaissés non versés', icon: 'fa-dollar-sign', visible: true },
-    { id: 'encaisse-verse', label: 'Encaissés et versés à la caisse', icon: 'fa-level-up-alt', visible: true },
+    { id: 'non-encaisse', label: 'Non Encaissï¿½s', icon: 'fa-clock', visible: true },
+    { id: 'encaisse-non-verse', label: 'Encaissï¿½s non versï¿½s', icon: 'fa-dollar-sign', visible: true },
+    { id: 'encaisse-verse', label: 'Encaissï¿½s et versï¿½s ï¿½ la caisse', icon: 'fa-level-up-alt', visible: true },
     { id: 'ancien-historique', label: 'Ancien Historique', icon: 'fa-history', visible: true }
   ],
   'finance': [
-    { id: 'reception-versement-admin', label: 'Réception versement admin', icon: 'fa-check', visible: true, section: 'reception' },
-    { id: 'depot-partenaire', label: 'Dépot d\'argent partenaire', icon: 'fa-user-plus', visible: true, section: 'reception' },
-    { id: 'depenses-charges', label: 'Dépenses (charges)', icon: 'fa-exchange-alt', visible: true, section: 'sortie' },
+    { id: 'reception-versement-admin', label: 'Rï¿½ception versement admin', icon: 'fa-check', visible: true, section: 'reception' },
+    { id: 'depot-partenaire', label: 'Dï¿½pot d\'argent partenaire', icon: 'fa-user-plus', visible: true, section: 'reception' },
+    { id: 'depenses-charges', label: 'Dï¿½penses (charges)', icon: 'fa-exchange-alt', visible: true, section: 'sortie' },
     { id: 'retrait-partenaire', label: 'Retrait d\'argent partenaire', icon: 'fa-user-minus', visible: true, section: 'sortie' },
     { id: 'pvs-caisse', label: 'PVs de caisse', icon: 'fa-funnel-dollar', visible: true, section: 'payments' },
     { id: 'pvs-transit', label: 'PVs en transit', icon: 'fa-exchange-alt', visible: true, section: 'payments' },
-    { id: 'pvs-archives', label: 'PVs archivés', icon: 'fa-history', visible: true, section: 'payments' },
+    { id: 'pvs-archives', label: 'PVs archivï¿½s', icon: 'fa-history', visible: true, section: 'payments' },
     { id: 'caisse-hub', label: 'Caisse', icon: 'fa-hand-holding-usd', visible: true, section: 'caisse' },
     { id: 'historique-mouvements', label: 'Historique des mouvements', icon: 'fa-history', visible: true, section: 'caisse' }
   ]
@@ -1290,14 +1290,14 @@ function getNavbarElementByIdentifier(element) {
   // Text-based identification with more specific patterns
   if (text.includes('ajouter') || hasIcon('fa-plus')) return 'ajouter';
   if (text.includes('ramassage') && !text.includes('en livraison')) return 'ramassage';
-  if ((text.includes('réception') || text.includes('reception')) && hasIcon('fa-cubes')) return 'reception';
+  if ((text.includes('rï¿½ception') || text.includes('reception')) && hasIcon('fa-cubes')) return 'reception';
   if (text.includes('dispatch') && hasIcon('fa-random')) return 'dispatch';
   if (text.includes('demandes de modification') || (text.includes('modification') && hasIcon('fa-edit'))) return 'modification';
   if (text.includes('feuilles de route') || text.includes('fdr') || hasIcon('fa-copy')) return 'fdr';
   if (text.includes('en livraison') && hasIcon('fa-truck')) return 'livraison';
   if (text.includes('suspendu') || text.includes('suspendus')) return 'suspendu';
   if (text.includes('retours') || hasIcon('fa-reply')) return 'retours';
-  if (text.includes('livrés') || text.includes('livres') || hasIcon('fa-check-square')) return 'livres';
+  if (text.includes('livrï¿½s') || text.includes('livres') || hasIcon('fa-check-square')) return 'livres';
   if (text.includes('finance') || hasIcon('fa-dollar-sign')) return 'finance';
 
   return null;
@@ -1608,7 +1608,7 @@ function getDropdownElementByIdentifier(element, parentIdentifier) {
       if (text.includes('sacs a valider') || hasIcon('fa-long-arrow-alt-right')) return 'sacs-valider';
       if (text.includes('colis a valider') && hasIcon('fa-check')) return 'colis-valider';
       if (text.includes('sacs perdus') || hasIcon('fa-exclamation-triangle')) return 'sacs-perdus';
-      if (text.includes('colis à transférer') || (text.includes('transférer') && hasIcon('fa-random'))) return 'colis-transferer';
+      if (text.includes('colis ï¿½ transfï¿½rer') || (text.includes('transfï¿½rer') && hasIcon('fa-random'))) return 'colis-transferer';
       if (text.includes('sacs sortants') || hasIcon('fa-long-arrow-alt-left')) return 'sacs-sortants';
       break;
       
@@ -1622,11 +1622,11 @@ function getDropdownElementByIdentifier(element, parentIdentifier) {
       
     case 'modification':
       if (text.includes('demandes en cours') || hasIcon('fa-edit')) return 'demandes-cours';
-      if (text.includes('demandes traitées') || hasIcon('fa-calendar')) return 'demandes-traitees';
+      if (text.includes('demandes traitï¿½es') || hasIcon('fa-calendar')) return 'demandes-traitees';
       break;
       
     case 'fdr':
-      if (text.includes('créer une feuille') || hasIcon('fe-file-text')) return 'creer-fdr';
+      if (text.includes('crï¿½er une feuille') || hasIcon('fe-file-text')) return 'creer-fdr';
       if (text.includes('activation') || hasIcon('fe-zap')) return 'activation-fdr';
       if (text.includes('liste des feuilles') || hasIcon('fe-layers')) return 'liste-fdr';
       if (text.includes('archive') || hasIcon('fa-archive')) return 'archive-fdr';
@@ -1639,37 +1639,37 @@ function getDropdownElementByIdentifier(element, parentIdentifier) {
         // Check parent sections to differentiate
         const sectionHeader = element.previousElementSibling;
         if (sectionHeader && sectionHeader.textContent.includes('HUB Admin')) return 'retours-dispatch-admin';
-        if (sectionHeader && sectionHeader.textContent.includes('entrepôt')) return 'retours-dispatch-entrepot';
+        if (sectionHeader && sectionHeader.textContent.includes('entrepï¿½t')) return 'retours-dispatch-entrepot';
         if (sectionHeader && sectionHeader.textContent.includes('Partenaires')) return 'retours-dispatch-partenaires';
       }
       if (text.includes('en transit') && hasIcon('fa-exchange-alt')) {
         const sectionHeader = element.previousElementSibling;
         if (sectionHeader && sectionHeader.textContent.includes('HUB Admin')) return 'retours-transit-admin';
-        if (sectionHeader && sectionHeader.textContent.includes('entrepôt')) return 'retours-transit-entrepot';
+        if (sectionHeader && sectionHeader.textContent.includes('entrepï¿½t')) return 'retours-transit-entrepot';
         if (sectionHeader && sectionHeader.textContent.includes('Partenaires')) return 'retours-transit-partenaires';
       }
       if (text.includes('historique') && hasIcon('fa-history')) {
         const sectionHeader = element.previousElementSibling;
-        if (sectionHeader && sectionHeader.textContent.includes('entrepôt')) return 'retours-historique-entrepot';
+        if (sectionHeader && sectionHeader.textContent.includes('entrepï¿½t')) return 'retours-historique-entrepot';
         if (sectionHeader && sectionHeader.textContent.includes('Partenaires')) return 'retours-historique-partenaires';
       }
       break;
       
     case 'livres':
-      if (text.includes('non encaissés') || hasIcon('fa-clock')) return 'non-encaisse';
-      if (text.includes('encaissés non versés') || (text.includes('non versés') && hasIcon('fa-dollar-sign'))) return 'encaisse-non-verse';
-      if (text.includes('encaissés et versés') || hasIcon('fa-level-up-alt')) return 'encaisse-verse';
+      if (text.includes('non encaissï¿½s') || hasIcon('fa-clock')) return 'non-encaisse';
+      if (text.includes('encaissï¿½s non versï¿½s') || (text.includes('non versï¿½s') && hasIcon('fa-dollar-sign'))) return 'encaisse-non-verse';
+      if (text.includes('encaissï¿½s et versï¿½s') || hasIcon('fa-level-up-alt')) return 'encaisse-verse';
       if (text.includes('ancien historique') || (text.includes('historique') && hasIcon('fa-history'))) return 'ancien-historique';
       break;
       
     case 'finance':
-      if (text.includes('réception versement admin') || (text.includes('versement') && hasIcon('fa-check'))) return 'reception-versement-admin';
-      if (text.includes('dépot d\'argent partenaire') || hasIcon('fa-user-plus')) return 'depot-partenaire';
-      if (text.includes('dépenses (charges)') || (text.includes('dépenses') && hasIcon('fa-exchange-alt'))) return 'depenses-charges';
+      if (text.includes('rï¿½ception versement admin') || (text.includes('versement') && hasIcon('fa-check'))) return 'reception-versement-admin';
+      if (text.includes('dï¿½pot d\'argent partenaire') || hasIcon('fa-user-plus')) return 'depot-partenaire';
+      if (text.includes('dï¿½penses (charges)') || (text.includes('dï¿½penses') && hasIcon('fa-exchange-alt'))) return 'depenses-charges';
       if (text.includes('retrait d\'argent partenaire') || hasIcon('fa-user-minus')) return 'retrait-partenaire';
       if (text.includes('pvs de caisse') || hasIcon('fa-funnel-dollar')) return 'pvs-caisse';
       if (text.includes('pvs en transit') && hasIcon('fa-exchange-alt')) return 'pvs-transit';
-      if (text.includes('pvs archivés') || (text.includes('archivés') && hasIcon('fa-history'))) return 'pvs-archives';
+      if (text.includes('pvs archivï¿½s') || (text.includes('archivï¿½s') && hasIcon('fa-history'))) return 'pvs-archives';
       if (text.includes('caisse') && hasIcon('fa-hand-holding-usd')) return 'caisse-hub';
       if (text.includes('historique des mouvements') || (text.includes('mouvements') && hasIcon('fa-history'))) return 'historique-mouvements';
       break;
